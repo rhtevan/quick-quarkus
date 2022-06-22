@@ -1,0 +1,11 @@
+# Showcase one of the better way to custom OpenShift manifests
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    custom.annotation: "This is a custome annotation"
+  labels:
+    custom.label: "This is a custome label"
+  name: quick-quarkus
+...

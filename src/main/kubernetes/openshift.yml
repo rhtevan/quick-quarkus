@@ -1,5 +1,5 @@
-# Showcase one of the better way to custom OpenShift manifests
 ---
+# Showcase one of the better way to custom OpenShift manifests
 apiVersion: apps/v1
 kind: Deployment
 metadata:

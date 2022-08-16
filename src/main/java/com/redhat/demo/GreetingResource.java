@@ -9,12 +9,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestStreamElementType;
 
 import io.smallrye.mutiny.Multi;
 
 @Path("/hello")
 public class GreetingResource {
+    private static final Logger LOG = Logger.getLogger(GreetingResource.class);
 
     @ConfigProperty(name = "greeting.message", defaultValue = "Hey")
     String msg;
@@ -22,6 +24,7 @@ public class GreetingResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
+        LOG.info("hello");
         return "Hello from RESTEasy Reactive - " + msg;
     }
 

@@ -2,15 +2,20 @@ receivers:
   otlp:
     protocols:
       grpc:
-        endpoint: otel-collector:4317
+        # By default listening on 4317 port
+        # endpoint: 0.0.0.0:4317
   otlp/2:
     protocols:
       grpc:
-        endpoint: otel-collector:55680
-
+        endpoint: 0.0.0.0:55680
 exporters:
   jaeger:
-    endpoint: jaeger-all-in-one:14250
+    # Collector and Jaeger platform are running in the same Pod
+    endpoint: 0.0.0.0:14250
+    # Collector container may be started faster than 
+    # the backend Jaeger platform
+    retry_on_failure:
+      enabled: true
     tls:
       insecure: true
 
@@ -25,5 +30,6 @@ service:
   pipelines:
     traces:
       receivers: [otlp,otlp/2]
+      # receivers: [otlp]
       processors: [batch]
       exporters: [jaeger]

@@ -1,14 +1,14 @@
 ---
 ############################################
 # Support local development with podman
-#   podman play kube ./container/otel-backend.yaml
+#   podman play kube ./container/otel.yaml
 ############################################
 apiVersion: v1
 kind: Pod
 metadata:
   labels:
     app: otel
-  name: otel-backend
+  name: otel
 spec:
   containers:
   - image: docker.io/jaegertracing/all-in-one:latest
@@ -27,7 +27,28 @@ spec:
         - CAP_MKNOD
         - CAP_NET_RAW
         - CAP_AUDIT_WRITE
-  restartPolicy: Never
+  - image: docker.io/otel/opentelemetry-collector:latest
+    name: collector
+    args:
+      - "--config=/etc/otel-collector-config.yaml"
+    ports:
+    - containerPort: 13133
+      hostPort: 13133
+    - containerPort: 4317
+      hostPort: 4317
+    - containerPort: 55680
+      hostPort: 55680
+    resources: {}
+    securityContext:
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_NET_RAW
+        - CAP_AUDIT_WRITE
+    volumeMounts:
+    - name: config
+      mountPath: /etc/otel-collector-config.yaml
+  restartPolicy: Always
   volumes:
   - name: config
     hostPath: # podman play kube supports hostPath and PVC volume only 

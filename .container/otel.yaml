@@ -1,7 +1,7 @@
 ---
 ############################################
 # Support local development with podman
-#   podman kube play kube ./.container/otel.yaml
+#   podman kube play ./.container/otel.yaml
 ############################################
 apiVersion: v1
 kind: Pod
